@@ -78,6 +78,14 @@ sel_circle_color = (int(drawing_options['sel_circle_b']),
 
 while True:
     cv.imshow('coordinate selection', img_with_corners)
+    line_thickness = int(drawing_options['line_thickness'])
+    calib_line_color = (int(drawing_options['calib_line_circle_b']),
+                        int(drawing_options['calib_line_circle_g']),
+                        int(drawing_options['calib_line_circle_r']))
+
+    tire_line_color = (int(drawing_options['tire_line_circle_b']),
+                       int(drawing_options['tire_line_circle_g']),
+                       int(drawing_options['tire_line_circle_r']))
     k = cv.waitKey(5) & 0xFF
     if k == 13:
         for i in coordinate_store.nearest_corners:
@@ -90,6 +98,46 @@ while True:
                       )
     if k == 27:
         break
+
+    if coordinate_store.click_count == 2:
+        left_calib_points = coordinate_store.get_left_calib_points()
+        cv.line(img_with_corners,
+                left_calib_points[0],
+                left_calib_points[1],
+                calib_line_color,
+                line_thickness)
+
+    if coordinate_store.click_count == 4:
+        left_tire_points = coordinate_store.get_left_tire_points()
+        cv.line(img_with_corners,
+                left_tire_points[0],
+                left_tire_points[1],
+                tire_line_color,
+                line_thickness)
+
+    if coordinate_store.click_count == 6:
+        right_calib_points = coordinate_store.get_right_calib_points()
+        cv.line(img_with_corners,
+                right_calib_points[0],
+                right_calib_points[1],
+                calib_line_color,
+                line_thickness)
+
+    if coordinate_store.click_count == 8:
+        right_tire_points = coordinate_store.get_right_tire_points()
+        cv.line(img_with_corners,
+                right_tire_points[0],
+                right_tire_points[1],
+                tire_line_color,
+                line_thickness)
+
+    if coordinate_store.click_count == 10:
+        middle_calib_points = coordinate_store.get_middle_calib_points()
+        cv.line(img_with_corners,
+                middle_calib_points[0],
+                middle_calib_points[1],
+                calib_line_color,
+                line_thickness)
 
 cv.destroyAllWindows()
 
