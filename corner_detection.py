@@ -151,6 +151,6 @@ file_save_path = filedialog.asksaveasfilename(title='Select location to save ima
                                                          ('all files', '*.*'))
                                               )
 
-print(round(measurer.get_distance(6), 1))
+print(round(measurer.get_distance(6), 2))
 
 plt.imsave(file_save_path, img)
