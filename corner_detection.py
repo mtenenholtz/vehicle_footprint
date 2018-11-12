@@ -30,7 +30,9 @@ detection_options = config['Detection']
 
 img = cv.imread(file_open_path, 1)
 
-rect = cv.selectROI(img=img,
+cv.namedWindow('roi selection', cv.WINDOW_NORMAL)
+rect = cv.selectROI(windowName='roi selection',
+                    img=img,
                     fromCenter=False
                     )
 
@@ -68,7 +70,7 @@ img_with_corners = np.fliplr(img.reshape(-1, 3)).reshape(img.shape) \
     if drawing_options.getboolean('flip_colors') \
     else img
 
-cv.namedWindow('coordinate selection')
+cv.namedWindow('coordinate selection', cv.WINDOW_NORMAL)
 cv.setMouseCallback('coordinate selection', coordinate_store.select_point, img_with_corners)
 
 sel_circle_color = (int(drawing_options['sel_circle_b']),
