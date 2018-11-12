@@ -1,6 +1,7 @@
 from matplotlib import pyplot as plt
 
 from coordinate_store import CoordinateStore
+from measure import PixelMeasurer
 
 import tkinter as tk
 from tkinter import filedialog
@@ -64,6 +65,7 @@ if drawing_options.getboolean('flip_colors'):
     img = np.fliplr(img.reshape(-1, 3)).reshape(img.shape)
 
 coordinate_store = CoordinateStore(corners)
+measurer = PixelMeasurer(coordinate_store)
 
 cv.destroyAllWindows()
 
@@ -111,7 +113,7 @@ while True:
                 line_thickness)
 
     if coordinate_store.click_count == 4:
-        left_tire_points = coordinate_store.get_left_tire_points()
+        left_tire_points = coordinate_store.get_left_wheel_points()
         cv.line(img_with_corners,
                 left_tire_points[0],
                 left_tire_points[1],
@@ -127,7 +129,7 @@ while True:
                 line_thickness)
 
     if coordinate_store.click_count == 8:
-        right_tire_points = coordinate_store.get_right_tire_points()
+        right_tire_points = coordinate_store.get_right_wheel_points()
         cv.line(img_with_corners,
                 right_tire_points[0],
                 right_tire_points[1],
@@ -148,5 +150,7 @@ file_save_path = filedialog.asksaveasfilename(title='Select location to save ima
                                               filetypes=(('png files', '*.png'),
                                                          ('all files', '*.*'))
                                               )
+
+print(round(measurer.get_distance(6), 1))
 
 plt.imsave(file_save_path, img)

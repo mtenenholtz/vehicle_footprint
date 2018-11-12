@@ -28,8 +28,8 @@ class CoordinateStore:
     def get_middle_calib_points(self):
         return [tuple(self.nearest_corners[8].ravel()), tuple(self.nearest_corners[9].ravel())]
 
-    def get_left_tire_points(self):
+    def get_left_wheel_points(self):
         return [tuple(self.nearest_corners[2].ravel()), tuple(self.nearest_corners[3].ravel())]
 
-    def get_right_tire_points(self):
+    def get_right_wheel_points(self):
         return [tuple(self.nearest_corners[6].ravel()), tuple(self.nearest_corners[7].ravel())]
