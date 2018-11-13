@@ -7,6 +7,7 @@ import tkinter as tk
 from tkinter import filedialog
 
 import numpy as np
+import os
 
 import cv2 as cv
 import configparser
@@ -151,6 +152,8 @@ file_save_path = filedialog.asksaveasfilename(title='Select location to save ima
                                                          ('all files', '*.*'))
                                               )
 
-print(round(measurer.get_distance(6), 2))
+file_name = os.path.split(file_open_path)[1]
+with open('measurement log.txt', 'a') as f:
+    f.write('[{}]: {} in.'.format(file_name, round(measurer.get_distance(float(detection_options['calib_length'])), 2)))
 
 plt.imsave(file_save_path, img)
