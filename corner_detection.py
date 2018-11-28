@@ -65,8 +65,10 @@ for i in corners:
 if drawing_options.getboolean('flip_colors'):
     img = np.fliplr(img.reshape(-1, 3)).reshape(img.shape)
 
+is_one_calib_block = True if int(detection_options['num_cal_blocks']) == 1 else False
+
 coordinate_store = CoordinateStore(corners)
-measurer = PixelMeasurer(coordinate_store)
+measurer = PixelMeasurer(coordinate_store, is_one_calib_block)
 
 cv.destroyAllWindows()
 
@@ -80,7 +82,6 @@ cv.setMouseCallback('coordinate selection', coordinate_store.select_point, img_w
 sel_circle_color = (int(drawing_options['sel_circle_b']),
                     int(drawing_options['sel_circle_g']),
                     int(drawing_options['sel_circle_r']))
-
 
 while True:
     cv.imshow('coordinate selection', img_with_corners)
@@ -106,10 +107,10 @@ while True:
         break
 
     if coordinate_store.click_count == 2:
-        left_calib_points = coordinate_store.get_left_calib_points()
+        middle_calib_points = coordinate_store.get_middle_calib_points()
         cv.line(img_with_corners,
-                left_calib_points[0],
-                left_calib_points[1],
+                middle_calib_points[0],
+                middle_calib_points[1],
                 calib_line_color,
                 line_thickness)
 
@@ -121,28 +122,21 @@ while True:
                 tire_line_color,
                 line_thickness)
 
-    if coordinate_store.click_count == 6:
-        right_calib_points = coordinate_store.get_right_calib_points()
+    if int(detection_options['num_cal_blocks']) == 2 and coordinate_store.click_count == 6:
+        side_calib_points = coordinate_store.get_side_calib_points()
         cv.line(img_with_corners,
-                right_calib_points[0],
-                right_calib_points[1],
+                side_calib_points[0],
+                side_calib_points[1],
                 calib_line_color,
                 line_thickness)
 
-    if coordinate_store.click_count == 8:
-        right_tire_points = coordinate_store.get_right_wheel_points()
+    if int(detection_options['num_cal_blocks']) == 2 and coordinate_store.click_count == 8 or \
+            int(detection_options['num_cal_blocks']) == 1 and coordinate_store.click_count == 6:
+        right_tire_points = coordinate_store.get_right_wheel_points(is_one_calib_block)
         cv.line(img_with_corners,
                 right_tire_points[0],
                 right_tire_points[1],
                 tire_line_color,
-                line_thickness)
-
-    if coordinate_store.click_count == 10:
-        middle_calib_points = coordinate_store.get_middle_calib_points()
-        cv.line(img_with_corners,
-                middle_calib_points[0],
-                middle_calib_points[1],
-                calib_line_color,
                 line_thickness)
 
 cv.destroyAllWindows()

@@ -19,17 +19,17 @@ class CoordinateStore:
                 self.nearest_corners.append(self.find_closest_point(point))
                 self.click_count += 1
 
-    def get_left_calib_points(self):
+    def get_middle_calib_points(self):
         return [tuple(self.nearest_corners[0].ravel()), tuple(self.nearest_corners[1].ravel())]
 
-    def get_right_calib_points(self):
+    def get_side_calib_points(self):
         return [tuple(self.nearest_corners[4].ravel()), tuple(self.nearest_corners[5].ravel())]
-
-    def get_middle_calib_points(self):
-        return [tuple(self.nearest_corners[8].ravel()), tuple(self.nearest_corners[9].ravel())]
 
     def get_left_wheel_points(self):
         return [tuple(self.nearest_corners[2].ravel()), tuple(self.nearest_corners[3].ravel())]
 
-    def get_right_wheel_points(self):
-        return [tuple(self.nearest_corners[6].ravel()), tuple(self.nearest_corners[7].ravel())]
+    def get_right_wheel_points(self, is_one_calib_block):
+        if is_one_calib_block:
+            return [tuple(self.nearest_corners[4].ravel()), tuple(self.nearest_corners[5].ravel())]
+        else:
+            return [tuple(self.nearest_corners[6].ravel()), tuple(self.nearest_corners[7].ravel())]
