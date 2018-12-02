@@ -68,7 +68,7 @@ if drawing_options.getboolean('flip_colors'):
 is_one_calib_block = True if int(detection_options['num_cal_blocks']) == 1 else False
 
 coordinate_store = CoordinateStore(corners)
-measurer = PixelMeasurer(coordinate_store, is_one_calib_block)
+measurer = PixelMeasurer(coordinate_store, is_one_calib_block, float(detection_options['correction_factor']))
 
 cv.destroyAllWindows()
 
@@ -148,6 +148,6 @@ file_save_path = filedialog.asksaveasfilename(title='Select location to save ima
 
 file_name = os.path.split(file_open_path)[1]
 with open('measurement log.txt', 'a') as f:
-    f.write('[{}]: {} in.'.format(file_name, round(measurer.get_distance(float(detection_options['calib_length'])), 2)))
+    f.write('[{}]: {} in.\n'.format(file_name, round(measurer.get_distance(float(detection_options['calib_length'])), 2)))
 
 plt.imsave(file_save_path, img)
